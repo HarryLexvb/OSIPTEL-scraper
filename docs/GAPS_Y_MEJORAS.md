@@ -180,7 +180,7 @@ Evidencia: [requirements.txt:8](../requirements.txt#L8).
 
 ## G18 · P2 · Versionado, licencia y documentación
 
-Evidencia: [README.md:1](../README.md#L1).
+Evidencia: [README.md:1](../README.md).
 
 **Gap:** Etiquetas de versión incompatibles y necesidad de unificar la referencia a LICENSE; README histórico del ZIP contradice código actual.
 
@@ -202,3 +202,30 @@ No se propone una reescritura completa como requisito inicial. Una base transacc
 ## Información obsoleta retirada de la guía principal
 
 Se retiraron garantías implícitas de operación productiva, soporte Excel general del lanzador y reanudación segura sin condiciones. No se conservan cifras de RUC/hora, consumo real o ahorro porcentual como hechos medidos. Las etiquetas históricas no se usan para presentar una versión oficial. Las cabeceras y comentarios de las fuentes mantienen esas afirmaciones antiguas porque esta tarea solo autoriza cambios documentales; la documentación vigente describe la ejecución real y registra las discrepancias.
+
+## Plan de implementación por etapas
+
+El orden busca resolver pérdidas de datos antes de aumentar velocidad o añadir interfaces. Ninguna etapa se implementó con esta actualización documental.
+
+| Etapa | Trabajo propuesto | Entregable y condición para avanzar |
+|---|---|---|
+| 1. Reproducción y contratos | Convertir los casos G01–G06 en pruebas locales; definir éxito, vacío válido, fallo e interrupción | Fixtures y fallos inyectados que reproduzcan los errores actuales sin depender de la red |
+| 2. Extracción completa | Validar finalización, recorrer paginación, exportar todas las líneas y respetar timeouts | Casos de 0/1/100/>100 líneas conciliados; ausencia de tabla nunca se acepta como cero válido |
+| 3. Recuperación durable | Persistir resultado/estado de forma consistente, restaurar lotes y drenar colas | Repetir interrupciones en puntos de escritura sin pérdida, duplicados ni sobrescritura de lotes cerrados |
+| 4. Control de trabajos | Separar fallidos y éxitos, identificar dataset/corrida y bloquear procesos incompatibles | Reintentos recuperables y entrada conservada por defecto; dos trabajos no mezclan estado |
+| 5. Configuración y operación | Unificar opciones, externalizar secretos, restaurar presupuesto, CLI no interactiva y reportes fieles | Cada parámetro tiene efecto comprobable; interrupción y errores generan estados correctos |
+| 6. Rendimiento y entrega | Medir recursos/proxy, fijar dependencias, corregir instalador, CI y releases | Entorno reproducible y benchmark con resultados verificados, sin usar el conteo de éxitos como única medida |
+
+### Diseño propuesto para resultados y progreso
+
+Evaluaría almacenamiento transaccional local, por ejemplo SQLite, para guardar consulta, estado, intentos y líneas relacionadas en una misma operación. Los CSV y lotes podrían generarse desde ese registro durable. Esto reduce el problema de coordinar CSV, JSON y entrada como fuentes independientes de verdad. **No es una dependencia ni arquitectura implementada actualmente.**
+
+Para exportación, propongo una tabla de consultas y otra con una fila por línea telefónica, relacionadas por identidad de consulta y RUC. Un RUC con 150 líneas tendría 150 filas de detalle; una consulta válida sin líneas quedaría en la tabla de consultas con estado explícito. Si se necesita CSV ancho por compatibilidad, debería ser una exportación derivada que anuncie y controle su límite.
+
+### Cómo aprovechar las otras copias
+
+La versión “- no optimo” conserva un corte de consumo estimado y lotes de anchura variable sin el truncamiento fijo del escritor actual. D: conserva diagnósticos de proxy y RUC individual. Conviene recuperar esas ideas con pruebas, no copiar módulos enteros: las otras copias también comparten fallos de recuperación y falsos éxitos. Su código no se modificó ni incorporó en esta tarea.
+
+### Funciones futuras opcionales
+
+Una API, dashboard, scheduler, notificaciones o despliegue remoto pueden evaluarse cuando el motor cumpla los criterios anteriores y exista una necesidad concreta. Hoy no tienen contrato, implementación o fecha. La prioridad propuesta es poder confiar en los datos y retomar una corrida, no ampliar superficies de ejecución todavía.
