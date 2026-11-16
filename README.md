@@ -8,7 +8,37 @@ Scraper local asíncrono para consultar líneas telefónicas por RUC en OSIPTEL 
 
 Las propuestas siguen pendientes: esta revisión cambia documentación, no implementa correcciones. Las etiquetas 1.0/3.0/6.0 de fuentes y respaldos no representan un versionado consistente ni acreditan preparación para producción.
 
+## Autor y contacto
+
+**Autor:** Harold Alejandro Villanueva Borda
+
+**Contacto:** [harrylex8@gmail.com](mailto:harrylex8@gmail.com)
+
+## Stack tecnológico
+
+| Tecnología | Versión declarada / base | Uso en el proyecto |
+|---|---|---|
+| Python | 3.10+ | Lenguaje principal y ejecución de scripts |
+| asyncio | Biblioteca estándar de Python | Tareas concurrentes, colas, sincronización y coordinación de workers |
+| Camoufox | >=0.4.11,<1.0.0 | Automatización del navegador basado en Firefox mediante AsyncCamoufox |
+| JavaScript / DOM | Ejecutado dentro del navegador | Interacción con formularios y extracción de filas de resultados |
+| aiofiles | >=24.0.0,<25.0.0 | Lectura y escritura asíncrona de resultados, progreso y lotes |
+| pandas | >=2.2.0,<3.0.0 | Lectura y transformación de archivos tabulares y limpieza de la entrada |
+| openpyxl | >=3.1.0,<4.0.0 | Soporte de Excel .xlsx para el lector interno; el lanzador automático sigue limitado a CSV |
+| aiohttp | >=3.10.0,<4.0.0 | Consultas HTTP auxiliares para la heurística inicial de red |
+| psutil | >=6.0.0,<7.0.0 | Detección de CPU, memoria y utilidades de contadores de red |
+| Proxy residencial SmartProxy | Configuración local del proveedor | Conexiones de los navegadores y sesiones de proxy |
+| CSV y JSON | Archivos locales | Persistencia de resultados, progreso, estadísticas y reportes; sin base de datos |
+| Windows / Batch / PowerShell | Entorno de operación e instalación | Instalador start.bat y comandos de preparación y ejecución |
+| venv y pip | Herramientas de Python | Entorno virtual e instalación de dependencias |
+| Git y GitHub | Control de versiones | Historial del código, documentación y publicación del repositorio |
+
+Los rangos corresponden a [requirements.txt](requirements.txt); no son versiones exactas instaladas ni un lockfile. La aplicación utiliza automatización de navegador y scripts locales; no incorpora un framework web.
+
 ## Contenido
+
+- [Autor y contacto](#autor-y-contacto)
+- [Stack tecnológico](#stack-tecnológico)
 
 1. [Objetivo y estado del proyecto](#1-objetivo-y-estado-del-proyecto)
 2. [Estructura y responsabilidades](#2-estructura-y-responsabilidades)
