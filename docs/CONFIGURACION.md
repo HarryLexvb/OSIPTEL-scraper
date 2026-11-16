@@ -59,3 +59,19 @@ En ScraperConfig siguen declarados navigation_timeout, delay_after_error, warn_b
 ## Secretos y cambios futuros
 
 Existen credenciales embebidas tanto en config.py como en ProxyConfig y ambos están versionados. No hay soporte .env implementado. La mejora pendiente es una sola fuente validada al inicio, secretos externos y configuración efectiva registrada sin secretos. No copie credenciales a ejemplos, issues o logs. Si se compartieron fuentes o historial, la retirada de valores actuales por sí sola no retira los secretos históricos.
+
+## Capacidad y consumo: fórmula disponible y sus límites
+
+El motor añade por defecto **550 KB estimados por resultado** y convierte con divisores 1024. No mide bytes reales, no contabiliza cada intento y no impone el presupuesto. El método calculate_max_rucs aplica:
+
+```text
+RUC nominales = floor(presupuesto_MB × 1024 / estimación_KB_por_RUC)
+```
+
+Por ejemplo, con 10000 unidades MB y 550 KB la fórmula devuelve 18618 RUC nominales. Es un cálculo del modelo interno, no una capacidad demostrada, límite de facturación o recomendación para una corrida. Tampoco asegura equivalencia con las unidades comerciales del proveedor. No se conservan tablas de planes o puertos que no se hayan contrastado con el servicio usado.
+
+### Cómo obtener estimaciones útiles
+
+Propongo medir una muestra controlada después de resolver la validación de resultados: tiempo total, éxitos verificados, fallos, reintentos, líneas obtenidas y tráfico atribuible al trabajo. Calcular RUC válidos por hora y coste por RUC incluyendo reintentos, y extrapolar con margen según variación observada. La latencia directa del optimizador actual no sustituye esa medición.
+
+No hay benchmark que justifique prometer tiempos para 1000/10000 RUC, una cantidad fija de RAM por navegador o una tasa de bloqueo por número de workers. Subir concurrencia antes de arreglar las colas puede aumentar resultados pendientes de guardar. Las pausas internas también dominan la duración: reducir solo MIN_DELAY no implica una mejora equivalente del tiempo total.

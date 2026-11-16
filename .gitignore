@@ -26,7 +26,6 @@ ENV/
 env/
 
 # IDE
-.vscode/
 .idea/
 *.swp
 *.swo
@@ -50,8 +49,8 @@ rucs/test_*.csv
 rucs/*.csv
 
 # Local credentials and private working files
-.env
-.env.*
 !.env.example
 *.local.py
 *.backup
+config.bat
+node_modules
